@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="stenze" />
+
+<meta name="date" content="2016-08-29" />
+
+<title>Stratification of Multivariate Data Sets for Latin Hypercube Sampling</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="css/scholmd-heuristically-latest.min.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+  padding-left: 10px;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">stenze-R-pieces</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Blog</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="mailto:s@skek.de">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/stenzei">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Stratification of Multivariate Data Sets for Latin Hypercube Sampling</h1>
+<h4 class="author"><em>stenze</em></h4>
+<h4 class="date"><em>29 August 2016</em></h4>
+
+</div>
+
+
+<div id="intro" class="section level1">
+<h1>Intro</h1>
+<div id="basics" class="section level2">
+<h2>Basics</h2>
+<p>Sensitivity analysis aims to get insight into the effect of input parameter variations on model output (for details see <a href="https://en.wikipedia.org/wiki/Sensitivity_analysis">Wikipedia</a>; for an overview see also the <a href="http://jasss.soc.surrey.ac.uk/17/3/11.html">paper of Thiele et al.</a>). Latin Hypercube Sampling is an approach to sensitivity analysis (see <a href="https://en.wikipedia.org/wiki/Latin_hypercube_sampling">Wikipedia</a>) to sample parameter values in a efficient way by dividing the multi-dimensional parameter space into strata, which contain the same number of parameter combinations. This approach is especially useful, if we have to deal with a large amount of discrete data and only limited or no knowledge about the multivariate distribution of input parameters and dependencies between them. One may want to run statistical tests to gain that knowledge. Another straightforward approach is to slice the data at hand directly into strata. Then, out of each stratum one single parameter point can be chosen randomly to perform the next steps of sensitivity analysis.</p>
+</div>
+<div id="use-case" class="section level2">
+<h2>Use case</h2>
+<p>The presented approach is useful, if you have a model to analyze and</p>
+<ul>
+<li><p>a large amount of discrete data on input parameters, i.e. parameter points,</p></li>
+<li><p>insufficient knowledge about distribution and/or dependencies of the multivariate input parameters,</p></li>
+</ul>
+<p>and if you want to sample points in parameter space to perform a sensitivity analysis.</p>
+</div>
+</div>
+<div id="example" class="section level1">
+<h1>Example</h1>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>To give an example we generate a data_frame <code>original.data</code> containing four dependent parameters <code>var1</code>, …, <code>var4</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+
+len &lt;-<span class="st"> </span><span class="fl">1e+4</span>
+dist1 &lt;-<span class="st"> </span><span class="kw">runif</span>(len, <span class="dt">min =</span> <span class="dv">1</span>, <span class="dt">max =</span> <span class="dv">5</span>) 
+dist2 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(len, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">3</span>)
+dist3 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(len, <span class="dt">mean =</span> <span class="dv">4</span>, <span class="dt">sd =</span> <span class="dv">1</span>) 
+dist4 &lt;-<span class="st"> </span><span class="kw">rlnorm</span>(len, <span class="dt">meanlog =</span> <span class="dv">0</span>, <span class="dt">sdlog =</span> <span class="fl">0.5</span>)
+l &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="st">&quot;var1&quot;</span> =<span class="st"> </span>dist1 *<span class="st"> </span>dist3,
+          <span class="st">&quot;var2&quot;</span> =<span class="st"> </span>dist2,
+          <span class="st">&quot;var3&quot;</span> =<span class="st"> </span>dist3 *<span class="st"> </span>dist2,
+          <span class="st">&quot;var4&quot;</span> =<span class="st"> </span>dist4 *<span class="st"> </span>dist3 +<span class="st"> </span>dist2)
+original.data &lt;-<span class="st"> </span><span class="kw">as_data_frame</span>(l)</code></pre></div>
+</div>
+<div id="plots" class="section level2">
+<h2>Plots</h2>
+<p>The Shiny app below allows you to choose the number of strata, which will be the same for all four parameters. The stratification of the first two parameters is shown in the upper plot, stratification of the third and fourth parameter is shown in the lower plot.</p>
+<p>Double-click inside one of the strata in the upper plot to see which subset of parameters tree and four belongs to the selected stratum.</p>
+<iframe src="https://stenze.shinyapps.io/app-stratification/" style="border:none" height="800" width="100%">
+</iframe>
+</div>
+</div>
+<div id="code" class="section level1">
+<h1>Code</h1>
+<p>In the following R-code is shown, which performs that stratification efficiently. The code uses mainly <code>dyplr</code> and related packages for data preparation, <code>ggplot2</code> for plotting and and <code>shiny</code> for interactivity.</p>
+<div id="recursive-function" class="section level2">
+<h2>Recursive function</h2>
+<p>The basic idea for the stratification is to proceed parameter-wise:</p>
+<ol style="list-style-type: decimal">
+<li><p>Take the first parameter i.e. the first column of the data_frame passed to the function.</p></li>
+<li><p>Slice that parameter into equally sized strata.</p></li>
+<li><p>Recursively call this function for the remaining parameters in each stratum.</p></li>
+</ol>
+<p>The animated gif illustrates this algorithm for three parameters and three strata per parameter, i.e. <span class="math inline">\(3^3 = 27\)</span> strata in total: <img src="figs/algo.gif" /> You can see that first parameter 1 is stratified then the first part of parameter 2, then the first part of parameter 3, than parameter 2 again and so on. The code for this function reads as follows.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())
+
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(tidyr)
+<span class="kw">library</span>(tibble)
+<span class="kw">library</span>(lazyeval)
+
+<span class="co"># Recursive function to calculate strata. </span>
+<span class="co"># Parameters: </span>
+<span class="co"># dta:         data_frame with any number of parameters each</span>
+<span class="co">#              column is exspected to represent one parameter  </span>
+<span class="co"># numb.strat:  number of strata in each dimension</span>
+stratify &lt;-<span class="st"> </span>function(dta, <span class="dt">numb.strat=</span><span class="dv">4</span>) {
+  parameters &lt;-<span class="st"> </span><span class="kw">names</span>(dta)                    <span class="co"># get the names of parameters,</span>
+  param &lt;-<span class="st"> </span>parameters[<span class="dv">1</span>]                      <span class="co"># store the name of the first,</span>
+ 
+  n &lt;-<span class="st"> </span>dta %&gt;%<span class="st">                                </span><span class="co"># claculate the number of values </span>
+<span class="st">    </span><span class="kw">summarise</span>(<span class="kw">n</span>())                            <span class="co"># (repetitions included),</span>
+  n &lt;-<span class="st"> </span>n$<span class="st">`</span><span class="dt">n()</span><span class="st">`</span>                                <span class="co"># calculate the number of </span>
+  s &lt;-<span class="st"> </span><span class="kw">floor</span>(n /<span class="st"> </span>numb.strat)                  <span class="co"># parameter values per stratum,</span>
+
+  if (!<span class="kw">is.integer</span>(n /<span class="st"> </span>numb.strat)) {          <span class="co"># ommit randomly all values which</span>
+    n &lt;-<span class="st"> </span>(s *<span class="st"> </span>numb.strat)                     <span class="co"># are too much to fit in the given </span>
+    dta &lt;-<span class="st"> </span>dta %&gt;%<span class="st">                            </span><span class="co"># stratum,</span>
+<span class="st">     </span><span class="kw">sample_n</span>(n)
+  }
+
+  strata &lt;-<span class="st"> </span>dta %&gt;%<span class="st">                           </span><span class="co"># take the data,</span>
+<span class="st">    </span><span class="kw">select_</span>(param) %&gt;%<span class="st">                        </span><span class="co"># select the first parameter,</span>
+<span class="st">    </span><span class="kw">arrange_</span>(param) %&gt;%<span class="st">                       </span><span class="co"># sort param values,</span>
+<span class="st">    </span><span class="kw">slice</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="kw">seq.int</span>(<span class="dt">from =</span> s,              <span class="co"># extract strata limits,</span>
+                       <span class="dt">to =</span> n, 
+                       <span class="dt">by =</span> s)))
+  
+  results &lt;-<span class="st"> </span><span class="kw">data_frame</span>()
+  for (i in <span class="dv">1</span>:(numb.strat)) {                 <span class="co"># for each stratum of the first</span>
+    lower.bound &lt;-<span class="st"> </span><span class="kw">interp</span>(~v &gt;=<span class="st"> </span>x,            <span class="co"># parameter calc lower boundary,</span>
+                          <span class="dt">v =</span> <span class="kw">as.name</span>(param), 
+                          <span class="dt">x =</span> <span class="kw">as.double</span>(strata[i, <span class="dv">1</span>]))
+    upper.bound &lt;-<span class="st"> </span><span class="kw">interp</span>(~v &lt;<span class="st"> </span>y,             <span class="co"># and calculate upper boundary,</span>
+                          <span class="dt">v =</span> <span class="kw">as.name</span>(param), 
+                          <span class="dt">y =</span> <span class="kw">as.double</span>(strata[i +<span class="st"> </span><span class="dv">1</span>, <span class="dv">1</span>]))
+    not.param &lt;-<span class="st"> </span><span class="kw">interp</span>(~-v, <span class="dt">v =</span> <span class="kw">as.name</span>(param))
+    next.strat &lt;-<span class="st"> </span>dta %&gt;%<span class="st"> </span>
+<span class="st">      </span><span class="kw">filter_</span>(lower.bound) %&gt;%<span class="st">                </span><span class="co"># filter the stratum which is</span>
+<span class="st">      </span><span class="kw">filter_</span>(upper.bound) %&gt;%<span class="st">                </span><span class="co"># to be stratified next,</span>
+<span class="st">      </span><span class="kw">select_</span>(not.param)                      <span class="co"># select the remaining parameters,</span>
+
+    if (<span class="kw">length</span>(parameters) &gt;<span class="st"> </span><span class="dv">1</span>) {             <span class="co"># unstratified parameters left?</span>
+      next.strat &lt;-<span class="st"> </span><span class="kw">stratify</span>(next.strat,      <span class="co"># stratify them</span>
+                             numb.strat)
+      new.col &lt;-<span class="st"> </span><span class="kw">interp</span>(~a, <span class="dt">a =</span> <span class="kw">as.double</span>(strata[i, <span class="dv">1</span>]))
+      next.strat &lt;-<span class="st"> </span>next.strat %&gt;%<span class="st">            </span><span class="co"># combine stratification results</span>
+<span class="st">        </span><span class="kw">mutate_</span>(<span class="dt">.dots =</span> <span class="kw">setNames</span>(<span class="kw">list</span>(new.col), param)) 
+      results &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(results, next.strat) <span class="co"># bind strata of param together</span>
+    } else {
+      <span class="kw">return</span>(<span class="kw">slice</span>(strata, -<span class="dv">1</span>))               <span class="co"># recursion reached leaf of tree</span>
+    }            
+  }
+  <span class="kw">return</span>(results)                             <span class="co"># done. return the stratum</span>
+}</code></pre></div>
+</div>
+<div id="using-stratify" class="section level2">
+<h2>Using <code>stratify()</code></h2>
+<p><code>stratify()</code> stratifies your multivariate input parameters. If the number of parameters is <span class="math inline">\(n\)</span> and the number of strata per parameter dimension in <span class="math inline">\(k\)</span>, then ’stratify()` returns <span class="math inline">\(k^n\)</span> equally sized strata. I.e. all strata have the same probability of being randomly chosen.</p>
+<div id="parameters" class="section level3">
+<h3>Parameters</h3>
+<p>The recursive function <code>stratify()</code> receives two parameters:</p>
+<ul>
+<li><p><code>dta</code>: the data_frame containing the parameters, which are to be stratified and</p></li>
+<li><p><code>numb.strat</code>: the number of strata in each parameter dimension. The returned data_frame contains in each column the lower boundary of each stratum.</p></li>
+</ul>
+</div>
+<div id="value" class="section level3">
+<h3>Value</h3>
+<p>As the returned value of the <code>stratify</code> is the data frame <code>results</code> containing the lower limits of each stratum. Note that the parameters are stratified consecutively. This means that the stratification of the second parameter depends on the stratification of the first parameter, the third on the second and so on. The column names (i.e. parameter names) are preserved.</p>
+</div>
+</div>
+<div id="performance" class="section level2">
+<h2>Performance</h2>
+<p>Let <span class="math inline">\(n\)</span> be the number of parameters and <span class="math inline">\(k\)</span> the number of strata per parameter. Basically <code>stratify</code> traverses a tree with <span class="math inline">\(k\)</span> child nodes per node and all paths having length <span class="math inline">\(n\)</span>. It computes stratification in <span class="math inline">\(O(k^n)\)</span> for a given total number of parameter combinations.</p>
+<p>Computing time increases strongly for bigger data sets. For example for a 4-dimensional parameter space elapsed computing time is shown in the following violin plot:</p>
+<p><img src="stratification_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>The performance of the algorithm could be increased be using parallelization. However, parallelize recursive functions appears to be a non-trivial task and will be subject to another post.</p>
+</div>
+<div id="shiny-app" class="section level2">
+<h2>Shiny app</h2>
+<p>You can examine and download the code of the example shiny app on <a href="https://github.com/stenzei/stratify">github</a>.</p>
+</div>
+</div>
+
+<hr>
+<p>Copyright &copy; 2016 stenze 
+<a href="mailto:s@skek.de">
+<i class="fa fa-envelope" aria-hidden="true"></i></a></p>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
