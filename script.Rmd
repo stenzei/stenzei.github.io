@@ -1,7 +1,7 @@
 ---
 title: "Building Shiny Dashboards"
-author: "stenze"
-date: "29 August 2016"
+author: "Sten Zeibig"
+date: "X 2017"
 output: 
   html_document:
     toc: yes
@@ -12,37 +12,19 @@ runtime: shiny
 ---
 
 # Introduction
-## Prerequisites
-Requirements:
-
-- Intermediate R programming skills 
-— knowing how to use dplyr and pipes
-- having a rough understanding of the grammar of graphics would be advantageous.
-
-Needed software: 
-- R preferably 3.4.1 or later 
-— RStudio (latest version is always best) 
-— shiny 1.0.5 or later 
-— shinydashboard 0.6.1 or later 
-— flexdashboard 0.5 or later 
-— tidyverse 1.1.1 or later 
-— highcharter 0.5.0 or later 
-— packrat 0.4.8 or later. 
-This is for a start. It will be probably necessary to install further packages 
-from the internet during the workshop.
 
 ## What is Shiny and what is it about?
 Shiny is a R package to allow to interact with plots, maps and tables to explore
 data. Especially dashboards are well suited to present data in an interactive 
 way. There is a number of R packages related to Shiny, which make it relatively 
 easy to develop dashboards by wrapping web technologies like HTML, CSS and 
-JavaScript. This script introduces into developing dashboards with Shiny and 
+JavaScript. This workshop introduces into developing dashboards with Shiny and 
 related packages. Core concepts of shiny (e.g. reactiveness) as well as 
 programming techniques like modularisation and debugging will be addressed. 
 
 ## About this workshop
-The aim of this workshop is to give a headstart for building shiny applications
-and especially dashboards. There is alot of very good material available in the
+The aim of this workshop is to give a head start for building shiny applications
+and especially dashboards. There is a lot of very good material available in the
 internet especially on the webpage of [RStudio](https://shiny.rstudio.com).
 We will use the documentation and tutorial there as main reference.
 
@@ -50,7 +32,7 @@ For plotting we use [highcharter](http://jkunst.com/highcharter/index.html),
 which is a R wrapper around the Java Script library Highcharts. This library 
 respects the grammar of graphics, uses pipes and allows to demonstrate the usage 
 of Java Script wrappers and their extension with Java Script in R. The usage of 
-Highcharts is not free for commertial and governmental use, but we are allowed 
+Highcharts is not free for commercial and governmental use, but we are allowed 
 to use it for scientific and educational purposes.
 
 At the end of this workshop you will have build a Shiny Dashboard an will know
@@ -58,20 +40,42 @@ where and how to find help about Shiny and related technologies quickly.
 
 ## Ressources
 RStudio's Shiny web page  [shiny.rstudio.com](https://shiny.rstudio.com) is your
-first choise. There is nothing better for self-study then the RStudio web page. 
+first choice. There is nothing better for self-study then the RStudio web page. 
 There, you can find introductory tutorial videos, webinars and articles about 
 advanced shiny programming.
 
 Everything else we are going to use is mostly well documented. You will find
-links to tutorials and documentation pages throughout this skript.
+links to tutorials and documentation pages throughout this script and an number 
+of links at [the end](#links) of this document.
 
+## Prerequisites
+Requirements:
+
+- Intermediate R programming skills 
+- knowing how to use dplyr and pipes
+- having a rough understanding of the grammar of graphics would be advantageous.
+
+Needed software: 
+
+- R preferably 3.4.1 or later 
+- RStudio (latest version is always best) 
+- shiny 1.0.5 or later 
+- shinydashboard 0.6.1 or later 
+- flexdashboard 0.5 or later 
+- tidyverse 1.1.1 or later 
+- highcharter 0.5.0 or later 
+- packrat 0.4.8 or later. 
+
+This is for a start. It will be probably necessary to install further packages 
+from the internet during the workshop.
 
 # Basic Shiny
 ## First Example
 
-The following is a first example of a simple Shiny app, which displys some 
-random numbers. The app allows to choose the number of random values. The
-details of the code are discused in the following sections.
+The following is a first example of a simple Shiny app, which displays some 
+random numbers. The app allows to choose the number of random values. You do not
+have to understand all parts of the code right now. The details of the code will
+be discussed in the following sections.
 
 ```{r include=FALSE}
 library(shiny)
@@ -83,6 +87,7 @@ library(highcharter)
 library(shiny)
 library(highcharter)
 
+# Define program logic inside the server function.
 server <- function(input, output) {
   # Define the output
   output$noise_plot <- renderHighchart({
@@ -99,6 +104,7 @@ server <- function(input, output) {
   })
 }
 
+# Define the user interface inside the ui list.
 ui <- fluidPage(
   highcharter::highchartOutput("noise_plot"),
   sliderInput("num", "Number of Values", min = 10, max = 500, value = 200)
@@ -109,7 +115,7 @@ shinyApp(ui = ui, server = server, options = list(height = 550))
 ```
 
 
-## App Design
+## Basic App Design
 ### app.R
 On the top level of your working directory lives the file app.R, which has the
 following structure:
@@ -138,7 +144,7 @@ shinyApp(ui = ui, server = server)
 In larger projects `server` and `ui` live in separate files on the top level of
 your working directory. 
 
-### Inputs and outputs
+### Linking Inputs and Outputs
 Inside the server function output elements are constructed and input elements
 are logically linked to them. Inside the ui list input and output elements are 
 arranged.
@@ -153,10 +159,10 @@ arranged.
 > standard deviation.
 
 ## Layout of user interfaces
-The `ui`-list ist createte by the function 
+The `ui`-list is created by the function 
 [`fluidPage()`](https://shiny.rstudio.com/reference/shiny/1.0.5/fluidPage.html). 
 This function arranges interface elements and adjusts the layout to the browser, 
-where your app runs. A simpla layout may look like this:
+where your app runs. A simple layout may look like this:
 
 ```{r eval=FALSE}
 ui <- fluidPage(
@@ -168,7 +174,7 @@ ui <- fluidPage(
 )
 ```
 
-This is the framework for a simple straight foreward user interface. See the
+This is the framework for a simple straight forward user interface. See the
 reference pages of
 [`titlePanel()`](https://shiny.rstudio.com/reference/shiny/1.0.5/titlePanel.html),
 [`sidebarLayout()`](https://shiny.rstudio.com/reference/shiny/1.0.5/sidebarLayout.html),
@@ -181,7 +187,7 @@ Inside the
 [`sidebarLayout()`](https://shiny.rstudio.com/reference/shiny/1.0.5/sidebarLayout.html)
 and
 [`mainPanel()`](https://shiny.rstudio.com/reference/shiny/1.0.5/mainPanel.html)
-you can place your input and output elements as well as formattet text:
+you can place your input and output elements as well as formatted text:
 
 ```{r eval=FALSE}
 ui <- fluidPage(
@@ -235,25 +241,25 @@ ui <- fluidPage(
 shinyApp(ui = ui, server = server, options = list(height = 580)) 
 ```
 
-This example shows the HTML builder funktions 
+This example shows the HTML builder functions 
 [`h3()`](https://shiny.rstudio.com/reference/shiny/1.0.5/builder.html) and 
 [`p()`](https://shiny.rstudio.com/reference/shiny/1.0.5/builder.html). These are
-basically wrappers around HTML tags. There are alot more of these functions.
+basically wrappers around HTML tags. There is a lot more of these functions.
 More examples and details are given in the 
 [RStudio Shiny Tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson2/).
 
 ## Controlls
 In the example above we have already used the 
 [`sliderInput()`](https://shiny.rstudio.com/reference/shiny/1.0.5/sliderInput.html)
-to allow users to select specific value. The first parameter of 
+to allow users to select specific values. The first parameter of 
 [`sliderInput()`](https://shiny.rstudio.com/reference/shiny/1.0.5/sliderInput.html)
 is its inputId. We access the value of the input by referencing this ID in the 
 server via `input$inputId`.
 
-There is alot more to say about controll widgeds. An overview about this is 
+There is a lot more to say about control widgets. An overview about this is 
 given in Lesson 3 of the 
 [RStudio Shiny Tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson3/).
-In the following you see the usage of a few controll widgets:
+In the following you see the usage of a few control widgets:
 
 ```{r eval=FALSE}
 ui <- fluidPage(
@@ -295,8 +301,8 @@ ui <- fluidPage(
     h3("Controls"),
     sliderInput("num", "Number of Values", min = 10, max = 500, value = 200),
     p("Use the slider input to choose the number of plotted random values."),
-    numericInput("mean", h3("Mean"), value = 0),
-    numericInput("sd", h3("Standard Deviation"), value = 1)
+    numericInput("mean", "Mean", value = 0),
+    numericInput("sd", "Standard Deviation", value = 1)
   ),
   mainPanel(
     h3("Plots & Infos"),  
@@ -310,7 +316,9 @@ shinyApp(ui = ui, server = server, options = list(height = 600))
 ```
 
 ### Exercise
-> Extend your app so that it looks like the following:
+> Extend your app so that it looks like the following. You might want to refer 
+> to [`radioButtons()`](https://shiny.rstudio.com/reference/shiny/1.0.5/radioButtons.html) 
+> and [`numericInput()`](https://shiny.rstudio.com/reference/shiny/1.0.5/numericInput.html).
 
 ```{r echo=FALSE}
 server <- function(input, output) {
@@ -337,13 +345,13 @@ server <- function(input, output) {
 
 ui <- fluidPage(
   sidebarPanel(
-    radioButtons("dist", h3("Distribution"),
+    radioButtons("dist", "Distribution",
                  choices = list("Normal" = "norm", "Log Normal" = "lognorm"),
                  selected = "norm"),
     sliderInput("num", "Number of Values", min = 10, max = 500, value = 200),
     p("Use the slider input to choose the number of plotted random values."),
-    numericInput("mean", h3("Mean"), value = 0),
-    numericInput("sd", h3("Standard Deviation"), value = 1)
+    numericInput("mean", "Mean", value = 0),
+    numericInput("sd", "Standard Deviation", value = 1)
   ),
   mainPanel(
     h3("Plots & Infos"),  
@@ -353,12 +361,12 @@ ui <- fluidPage(
 )
 
 # The shiny app is created here.
-shinyApp(ui = ui, server = server, options = list(height = 600)) 
+shinyApp(ui = ui, server = server, options = list(height = 500)) 
 ```
 
 
 ## Outputs
-In the examples and exercices above we already used the 
+In the examples and exercises above we already used the 
 [`highchartOutput()`](http://jkunst.com/highcharter/shiny.html). This 
 function displays plots generated with the 
 [`highcharter`](http://jkunst.com/highcharter/index.html) 
@@ -411,10 +419,9 @@ and the shiny
 [output for data tables](https://shiny.rstudio.com/reference/shiny/1.0.5/tableOutput.html).
 
 ### Exercise
-> 1. Find out about the differences about `renderTable()` and 
-> `renderDataTable()`. (There are difference on the level of usage, and on 
-> a technical level. Both illustrate the the extensively used approach of shiny 
-> to wrap Java Script libraries.) 
+> 1. Extend your app by 
+> [`dataTableOutput()`](https://shiny.rstudio.com/reference/shiny/1.0.5/tableOutput.html) and 
+> [`renderDataTable()`](https://shiny.rstudio.com/reference/shiny/1.0.5/renderDataTable.html).
 > 2. Change your table (e.g. number of shown lines).
 > 3. Change the layout of your app: You now want to display the plot and the 
 > table side by side. (Hint: 
@@ -457,7 +464,7 @@ ui <- fluidPage(
       h3("Plot"),  
       plotOutput("noise_plot")
     ),
-        column(width = 4,
+    column(width = 4,
       h3("Plot"),  
       dataTableOutput("noise_table")
     )
@@ -468,34 +475,34 @@ shinyApp(ui = ui, server = server, options = list(height = 800))
 
 
 ## Reactivity
-This is the core concept of shiny. Understanding this is crucial writing 
-correct and efficient code and ,in the end, for being able to develop more 
+This is the core concept of shiny. Understanding this is crucial for writing 
+correct and efficient code and, in the end, for being able to develop more 
 complex apps like dashboards. The code of Shiny apps is not executed 
 sequentially but on demand. Code parts react to what is happening in other code
 parts. This reactivity could be understood by a directed information 
 propagation graph. In this graph information is propagated from root nodes to 
-the leafes. 
+the leaves. 
 
 We used reactiveness implicitly in all the examples: `output$...` reacts to 
-changes is `input$...`. As a simple information propagation graph, it looks as
+changes is `input$...`. A simple information propagation graph looks as
 follows:
 
 ![Simple information propagation graph (Source: 
 [RStudio](https://shiny.rstudio.com/articles/reactivity-overview.html))](https://shiny.rstudio.com/images/reactivity_diagrams/simplest.png)
 
-On the left there is some `input$...` element (called _reactive source_), on the 
-right there is a `output$...` reacting on changes in the input (called 
-_reactive endpoint_). This means the code for generating the output (e.g. a plot 
-or a table) inside the server function is executed: Everytime we move the slider 
+On the left there is some `input$...` element (called _reactive source_). On the 
+right there is an `output$...` element (called _reactive endpoint_) reacting to 
+changes in the input. This means the code for generating the output (e.g. a plot 
+or a table) inside the server function is executed: Every time we move the slider 
 input in our latest app the functions `renderPlot()` and `renderTable()` are 
 re-executed.
 
-This has the advantage, that code is only executed when needed for the output. 
+This has the advantage, that code is only executed if it is necessary. 
 What we also want is that we execute as little code as possible to update the
 output. Thus we want to avoid redundant code execution.
 
 In out last example above, the `server()` code contains the following part 
-twice, in `renderPlot()` and `renderTable()`.
+twice (with different results!), in `renderPlot()` and `renderTable()`.
 
 ```{r eval=FALSE}
     # Lets make some noise!
@@ -516,7 +523,7 @@ The corresponding `server()` code is shown in the following:
 
 ```{r eval=FALSE}
 server <- function(input, output) {
-  # Do the calculatins
+  # Do the calculations
   dta <- reactive({
     # Lets make some noise!
     val <- rnorm(n = input$num, mean = 0, sd = 1)
@@ -547,7 +554,7 @@ responsive conductors are followed by `()` when they are called.
 
 For more information you may want to refer to
 [lesson 6](https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/)
-of the RStudio shiny tutorial. For exhaustive informations on this topic see 
+of the RStudio shiny tutorial. For exhaustive information on this topic see 
 [RStudio's articles about reactivity](https://shiny.rstudio.com/articles/#reactivity).
 
 # Debugging
@@ -576,14 +583,13 @@ You can find examples of running apps in showcase mode at the RStudio
 
 ## Reactive Log
 Another way to understand the reactive nature of your app is to examine the 
-_reactive log_ of your app. Basicaly, with this function you can examine the
+_reactive log_ of your app. Basically, with this function you can examine the
 information propagation graph of your app. To start the reactive log execute
 
 - `options(shiny.reactlog=TRUE)` in your RStudio console,
-- start your app by `runApp('dmo/MyApp.R')`, 
+- start your app by `runApp('app.R')`, 
 - perform one or two actions in your app, and 
-- hit CTRL+F3 (or for Mac users Command+F3, or for Mac users with touch bar 
-fn+Command+F3).
+- hit CTRL+F3 (or for Mac users fn+Command+F3).
 
 You then see the reactive log of your app for the actions you just performed.
 
@@ -593,8 +599,8 @@ You then see the reactive log of your app for the actions you just performed.
 ## `browser()`
 Especially in larger apps and for developing complicated parts of your code 
 which may refer to a certain state of your app, showcase and reactive log are
-not helpfull. In these situation you want to use the `browser()` function. You
-can put it anywhere in your R-code. Code execution stopps ass soon as it passes
+not helpful. In these situation you want to use the `browser()` function. You
+can put it anywhere in your R-code. Code execution stops as soon as it passes
 the `browser()`. You then can analyse the state of your app, e.g. examine 
 values of variables.
 
@@ -618,13 +624,13 @@ browser()
 ### Exercise
 > Try this and play around.
 
-Do not forget to remove all `browser()` calls from your code after debugging.
+Do not forget to remove all `browser()` calls from your code after debugging!
 
 # Dashboards
 As soon as you want to communicate more complex data analyses and allow for 
-users to play around with your data, you need to organize your inputs and output 
-in some meaningfull way. For this pourose dashboars are used. At the moment 
-there are basically two R packages to build dashborads: 
+users to play around with your data, you need to organize your inputs and outputs 
+in some meaningful way. For this purpose dashboards are used. At the moment 
+there are (at least) two R packages to build dashboards: 
 [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) and 
 [shinydashboard](http://rstudio.github.io/shinydashboard/). In the following a
 brief overview is given. You will learn more about dashboards later on in the 
@@ -632,11 +638,11 @@ project.
 
 ## Flexdashboard 
 The [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/shiny.html) 
-package uses [rmarkdown](http://rmarkdown.rstudio.com) to structure dashboards. 
-The advandtage of rmarkdown is that is easy to code. The disadvantage is that it 
-is not R, which means that some things do not work as expected (e.g. debugging 
-with `browser()`). The flexdashboard package features many interesting layouts. 
-The following is a simple example of a flexdashboard:
+package uses [rmarkdown](http://rmarkdown.rstudio.com) to structure a dashboard. 
+The advantage of rmarkdown is that is easy to code. The disadvantage is that it 
+is not only R, which means that some things do not work as expected (e.g. 
+debugging with `browser()`). The flexdashboard package features many interesting 
+layouts. The following is a simple example of a flexdashboard:
 
 ### Example
 ```{r eval=FALSE}
@@ -708,19 +714,19 @@ This is a new page. Here, you might want to provide further content.
 ```
 
 ### Exercise
-> Create a new Rmd file inside your RStudio IDE and copy the example code into 
-> this file. (Note, you need to replace ` `` ` by ` ``` `! Otherwise the code is
-> not syntactally correct.) 
+> Create a new .Rmd file inside your RStudio IDE and copy the example code into 
+> this file. (__Note, you need to replace ` `` ` by ` ``` `!__ Otherwise the code is
+> not syntactically correct.) 
 > Play around with the dashboard. Later on, it might be the starting point for 
 > your own project.
 
 ## Shinydashboard
 The [shinydashboard](http://rstudio.github.io/shinydashboard/) package uses the
 'regular' shiny approach to structure the dashboard. This might be slightly 
-more complicated than flexdashboard, but it is more flexible and it is R, which
-means, everything works as expected. The shinydashboard package provides many 
-features like menues for notifications or messages, boxes to display values, and 
-different styles and layouts.
+more complicated than flexdashboard, but it is more flexible and it is R only, 
+which means, everything works as expected. The shinydashboard package provides 
+many features like menus for notifications or messages, boxes to display values, 
+and different styles and layouts.
 
 The basic structure of a shinydashboard looks as follows:
 ```{r include=FALSE}
@@ -768,7 +774,7 @@ ui <- dashboardPage(
 
 
 Note, the structure of the shinydashboard only affects the `ui` list. The server
-remais the same as in a regular shiny app. Examine the following working example:
+remains the same as in a regular shiny app. Examine the following working example:
 
 ### Example
 ```{r}
@@ -848,25 +854,27 @@ shinyApp(ui, server, options = list(height = 700))
 
 # Project
 ## Next Steps
-Now, we have done a brute force ride through features of shiny dashboard. In the
-following you can choose one of three posibilities for your next steps in this 
-workshop. The aim is to deepen and extend your understanding of shiny.
+Now, we have done a brute force ride through features of Shiny. Now, you can 
+choose one out of three options for your next steps in this workshop. The aim is 
+to deepen and extend your understanding of Shiny. The three options are:
 
 1. You are pretty new to R and or programming and want to understand the basics
-more in debth: Take the RStudio Shiny Tutorial and other articles about Shiny. 
-This is high quality material, but if you need support, you will get it here.
+more in depth: Take the 
+[RStudio Shiny Tutorial](https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/) 
+and read [other articles](https://shiny.rstudio.com/articles/) about Shiny. This 
+is high quality material, but if you need support, you will get it here.
 
-2. You got the basic idea of shiny and want to know more about dashboards: Go on 
-with the example dashboard. You can read about this in the following.
+2. You got the basic idea of Shiny and want to know more about dashboards: Go on 
+with one of the example dashboards. You can read about this in the following.
 
 3. You are pretty confident that you are able to develop your own dashboard: Go 
-on with this and take the first steps toward your own app. Take one of the 
-examples above or one of the two working dashboard below as a starting point. 
+on with this and take the first steps towards your own app. Take one of the 
+examples above or one of the two working dashboards below as a starting point. 
 You will get as much support as possible.
 
-## A Shiny Weather dashboard 
-The app allows to compare the forcast data from different providers and assess 
-its reliability.
+## A Shiny Weather Dashboard 
+This dashboard allows to compare the forecast data from different providers and 
+assess its reliability.
 
 ### Data
 As toy example we will create an app which shows weather forecast data from four
@@ -888,10 +896,10 @@ happens on a daily basis and is not part of the dashboard.
 ### Dashboard structure
 The dashboard comes in two versions: as 
 [flexdashboard](http://rmarkdown.rstudio.com/flexdashboard/) and as
-[shinydashboard](http://rstudio.github.io/shinydashboard/). Both dashbaords use
+[shinydashboard](http://rstudio.github.io/shinydashboard/). Both dashboards use
 modules to encapsulate different parts of the app. To access the data we will
 use a R6-class. You will learn about modules and R6 classes first and then go on 
-with one of the two dashboard. Apart from the modules both dashboards are 
+with one of the two dashboards. Apart from the modules both dashboards are 
 structured according to what you have learned above. 
 
 ### Exercises
@@ -914,7 +922,10 @@ structured according to what you have learned above.
 > 3. Add a new tab to the dashboard which displays a table showing all the data.
 > 4. Add further tabs for further views on the data (e.g. you might want to show
 >    weather history)
-> 5. You might want to improve the plots, add other types of plots, add more 
+> 5. All the data is loaded at once when the dashboard is started. Change the 
+>    code, so that only data is loaded which is really needed at start-up time.
+>    Introduce a button to trigger loading the rest of the data. 
+> 6. You might want to improve the plots, add other types of plots, add more 
 > details to the map, introduce more inputs to increase interactivity. Go ahead!
 > Try to keep the structure given and extend it.
 
@@ -924,11 +935,11 @@ There are two further techniques used in the Shiny Weather dashboards, which are
 briefly described in the following.
 
 ## Modules
-Modules are good way to manage complex application code. They can be seen as 
+Modules are a good way to manage complex application code. They can be seen as 
 independent building blocks of your dashboard or application. They consist of an
-ui part and a server part, both defiened in a single file. You can find a good 
+`ui` part and a `server` part, both defined in a single file. You can find a good 
 [introduction into using modules](https://shiny.rstudio.com/articles/modules.html) 
-on the RStudio website. An example showing the basic struchture of a
+on the RStudio website. An example showing the basic structure of a
 module is given in the 
 [RStudio gallary](http://shiny.rstudio.com/gallery/module-example.html).
 
@@ -936,10 +947,10 @@ The two Shiny Weather dashboards use the same modules. I.e. the modules are
 just plugged into different dashboard frameworks.
 
 ## R6-classes
-R6-classes allow for the object-oriented programming pardigm and are easyer 
+R6-classes allow for the object-oriented programming paradigm and are easier 
 to understand than the other types of R classes. Classes in general help to
 encapsulate and structure code in larger code bases. In the Shiny Weather 
-Dashboard a R6-class is used to encapsulate data crunching.
+dashboard a R6-class is used to encapsulate data processing.
 
 For a comprehensive introduction on R6 classes there is a
 [vignette of the package](https://cran.r-project.org/web/packages/R6/vignettes/Introduction.html).
@@ -951,7 +962,7 @@ library(R6)
 
 Animal <- R6Class("Person",
   # List of public class memders. This can be variables or functions.
-  # Public mambers are accessible form the outside of the class.
+  # Public members are accessible form the outside of the class.
   public = list(
     name = NULL,
     species = NULL,
@@ -995,21 +1006,21 @@ Animal <- R6Class("Person",
 ```
 
 
-The shown R6-class can than be used as follows.
+The shown R6-class can be used as follows.
 ```{r}
 # Instantiate an object of class Animal
 animal_sam <- Animal$new("Sam", "dog", "4")
 
 # Call a public function of that class
-animal_sam$set_legs(5)
+animal_sam$set_legs(3)
 
-# Public member variable are also accessible
+# Public member variables are also accessible
 animal_sam$name
 ```
 
 
-# Links
-Some links to helpfull resources:
+#Links {#links}
+Some links to helpful resources:
 
 - [Cheetsheets](https://www.rstudio.com/resources/cheatsheets/)
 - [RStudio](https://shiny.rstudio.com)
