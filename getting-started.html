@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>How to install ShinyProxy on macOS</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">stenze-R-pieces</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="index.html">Blog</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="http://github.com/stenzei">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">How to install ShinyProxy on macOS</h1>
+<h4 class="date"><em>II.2018</em></h4>
+
+</div>
+
+
+<p>How to get ShinyProxy run on Linux systems can be found on the <a href="https://www.shinyproxy.io">ShinyProxy</a> website. However, on macOS things are slightly different. The following holds at least for macOS 10.13.3 on a 2016 MacBook Pro and bases on the <a href="https://www.shinyproxy.io/getting-started/"><em>Getting Started</em></a> section of the ShinyProxy website, but is adapted to macOS.</p>
+<div id="prerequisites" class="section level1">
+<h1>Prerequisites</h1>
+<div id="java-8" class="section level3">
+<h3>Java 8</h3>
+<p>You will need the Java 8 runtime environment. First find out your Java version (use your terminal):</p>
+<pre><code>java -version</code></pre>
+<p>You should see something like</p>
+<pre><code>java version &quot;1.8.0_162&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_162-b12)
+...</code></pre>
+<p>If you don’t see that, install <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Java 8</a>.</p>
+</div>
+<div id="docker" class="section level3">
+<h3>Docker</h3>
+<p>You will also need Docker. But, this part is fairly different from what works on Linux systems.</p>
+<div id="installation" class="section level4">
+<h4>Installation</h4>
+<p>Find out if the Docker daemon is running:</p>
+<pre><code>docker run hello-world</code></pre>
+<p>You should see something like this:</p>
+<pre><code>Hello from Docker!
+This message shows that your installation appears to be working correctly.
+...</code></pre>
+<p>If you have Docker installed but not running you can start it from your Terminal by</p>
+<pre><code>open /Applications/Docker.app</code></pre>
+<p>Alternatively, you can start Docker by using the standard way of starting apps in macOS. If you need to install Docker on your Mac you will find instructions how to install it on the <a href="https://docs.docker.com/docker-for-mac/install/">docker</a> website.</p>
+</div>
+<div id="docker-startup-options" class="section level4">
+<h4>Docker startup options</h4>
+<p>When you execute the ShinyProxy JAR file it connects to the Docker daemon on port 2375. Therefore, you need to configure Docker to allow that. On Linux systems, this is done by setting the startup options for the the Docker daemon. On macOS for security reasons this port is not exposed directly. A work around is shown in number 4 of the following attempts to solve the problem. The first three do not work. So, if you are not interested in what is not working skip the next three points.</p>
+<div id="editing-daemon.json" class="section level5">
+<h5>1. Editing <code>daemon.json</code></h5>
+<p>The following (maybe intuitive) way does <strong>not work</strong> (at least currently):</p>
+<ul>
+<li>Click <img src="img/docker-whale.png" /> in your menu bar</li>
+<li>Select <em>Preferences …</em></li>
+<li>Go to <em>Deamon</em></li>
+<li>Click <em>Advanced</em></li>
+<li>Add to the daemon settings:</li>
+</ul>
+<pre><code>{
+  ...
+  &quot;hosts&quot; : [&quot;tcp://127.0.0.1:2375&quot;, &quot;unix://&quot;],
+  ...
+}</code></pre>
+<p>This yields: <em>“hosts” : Cannot be used in Docker for mac.</em></p>
+</div>
+<div id="starting-daemon-with--h-option" class="section level5">
+<h5>2. Starting daemon with <code>-H</code> option</h5>
+<p>The following two (<strong>not working</strong>) approaches can also be found on internet:</p>
+<pre><code>sudo dockerd -H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375
+
+sudo nohup docker daemon -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock &amp;</code></pre>
+<p>This works for Linux systems, on macOS both do not work (see <a href="https://github.com/docker/for-mac/issues/2267">here</a> for an explanation).</p>
+</div>
+<div id="setting-docker_host-variable" class="section level5">
+<h5>3. Setting <code>$DOCKER_HOST</code> variable</h5>
+<p>Another <strong>not working</strong> way one could try is to set a system variable. The docker client honors $DOCKER_HOST (for details see <a href="https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option">here</a>). You may proceed as follows:</p>
+<pre><code>DOCKER_HOST=tcp://127.0.0.1:2375
+launchctl setenv DOCKER_HOST $DOCKER_HOST</code></pre>
+</div>
+<div id="using-a-socat-container" class="section level5">
+<h5>4. Using a <code>socat</code> container</h5>
+<p>Using a socat container to redirect the Docker API <strong>works</strong> eventually. See <a href="https://github.com/docker/for-mac/issues/770">here</a> for details.</p>
+<pre><code>docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375, fork UNIX-CONNECT:/var/run/docker.sock
+export DOCKER_HOST=tcp://localhost:1234</code></pre>
+</div>
+</div>
+<div id="download" class="section level4">
+<h4>Download</h4>
+<p>For macOS you need to download the platform-independent JAR file from this <a href="https://www.shinyproxy.io/downloads/">site</a>.</p>
+</div>
+<div id="running-shinyproxy" class="section level4">
+<h4>Running ShinyProxy</h4>
+<p>This part works as described on the ShinyProxy <a href="https://www.shinyproxy.io/getting-started/#running-shinyproxy"><em>Getting Started</em></a> website. If you need more details you will find them there.</p>
+<div id="pulling-the-demo-image" class="section level5">
+<h5>Pulling the demo image</h5>
+<pre><code>sudo docker pull openanalytics/shinyproxy-demo</code></pre>
+</div>
+<div id="running-shinyproxy-1" class="section level5">
+<h5>Running ShinyProxy</h5>
+<pre><code>java -jar shinyproxy-x.y.z.jar</code></pre>
+<p>Substitute <code>x.y.z</code> with the ShinyProxy version number. When running the demo app you will be asked for username and password. These are “einstein” and “password”.</p>
+<p>Hope that helps.</p>
+</div>
+</div>
+</div>
+</div>
+
+<hr>
+<p>Copyright &copy; 2016 stenze &nbsp;&nbsp;
+<i class="fa fa-envelope" aria-hidden="true"></i> Contact: s at skek dot de</p>
+<p><a href="imprint.html">Impressum (German)</a></p>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
