@@ -9,6 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="stenze" />
 
 
 <title>How to install ShinyProxy on macOS</title>
@@ -19,11 +20,12 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
-<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -164,6 +166,101 @@ $(document).ready(function () {
 
 
 
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
 
 
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
@@ -203,7 +300,8 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">How to install ShinyProxy on macOS</h1>
-<h4 class="date"><em>II.2018</em></h4>
+<h4 class="author"><em>stenze</em></h4>
+<h4 class="date"><em>I.2018</em></h4>
 
 </div>
 
@@ -211,8 +309,8 @@ $(document).ready(function () {
 <p>How to get ShinyProxy run on Linux systems can be found on the <a href="https://www.shinyproxy.io">ShinyProxy</a> website. However, on macOS things are slightly different. The following holds at least for macOS 10.13.3 on a 2016 MacBook Pro and bases on the <a href="https://www.shinyproxy.io/getting-started/"><em>Getting Started</em></a> section of the ShinyProxy website, but is adapted to macOS.</p>
 <div id="prerequisites" class="section level1">
 <h1>Prerequisites</h1>
-<div id="java-8" class="section level3">
-<h3>Java 8</h3>
+<div id="java-8" class="section level2">
+<h2>Java 8</h2>
 <p>You will need the Java 8 runtime environment. First find out your Java version (use your terminal):</p>
 <pre><code>java -version</code></pre>
 <p>You should see something like</p>
@@ -221,11 +319,12 @@ Java(TM) SE Runtime Environment (build 1.8.0_162-b12)
 ...</code></pre>
 <p>If you don’t see that, install <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Java 8</a>.</p>
 </div>
-<div id="docker" class="section level3">
-<h3>Docker</h3>
+<div id="docker" class="section level2">
+<h2>Docker</h2>
 <p>You will also need Docker. But, this part is fairly different from what works on Linux systems.</p>
-<div id="installation" class="section level4">
-<h4>Installation</h4>
+</div>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
 <p>Find out if the Docker daemon is running:</p>
 <pre><code>docker run hello-world</code></pre>
 <p>You should see something like this:</p>
@@ -236,11 +335,11 @@ This message shows that your installation appears to be working correctly.
 <pre><code>open /Applications/Docker.app</code></pre>
 <p>Alternatively, you can start Docker by using the standard way of starting apps in macOS. If you need to install Docker on your Mac you will find instructions how to install it on the <a href="https://docs.docker.com/docker-for-mac/install/">docker</a> website.</p>
 </div>
-<div id="docker-startup-options" class="section level4">
-<h4>Docker startup options</h4>
+<div id="docker-startup-options" class="section level2">
+<h2>Docker startup options</h2>
 <p>When you execute the ShinyProxy JAR file it connects to the Docker daemon on port 2375. Therefore, you need to configure Docker to allow that. On Linux systems, this is done by setting the startup options for the the Docker daemon. On macOS for security reasons this port is not exposed directly. A work around is shown in number 4 of the following attempts to solve the problem. The first three do not work. So, if you are not interested in what is not working skip the next three points.</p>
-<div id="editing-daemon.json" class="section level5">
-<h5>1. Editing <code>daemon.json</code></h5>
+<div id="editing-daemon.json" class="section level3">
+<h3>1. Editing <code>daemon.json</code></h3>
 <p>The following (maybe intuitive) way does <strong>not work</strong> (at least currently):</p>
 <ul>
 <li>Click <img src="img/docker-whale.png" /> in your menu bar</li>
@@ -256,45 +355,44 @@ This message shows that your installation appears to be working correctly.
 }</code></pre>
 <p>This yields: <em>“hosts” : Cannot be used in Docker for mac.</em></p>
 </div>
-<div id="starting-daemon-with--h-option" class="section level5">
-<h5>2. Starting daemon with <code>-H</code> option</h5>
+<div id="starting-daemon-with--h-option" class="section level3">
+<h3>2. Starting daemon with <code>-H</code> option</h3>
 <p>The following two (<strong>not working</strong>) approaches can also be found on internet:</p>
 <pre><code>sudo dockerd -H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375
 
 sudo nohup docker daemon -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock &amp;</code></pre>
 <p>This works for Linux systems, on macOS both do not work (see <a href="https://github.com/docker/for-mac/issues/2267">here</a> for an explanation).</p>
 </div>
-<div id="setting-docker_host-variable" class="section level5">
-<h5>3. Setting <code>$DOCKER_HOST</code> variable</h5>
+<div id="setting-docker_host-variable" class="section level3">
+<h3>3. Setting <code>$DOCKER_HOST</code> variable</h3>
 <p>Another <strong>not working</strong> way one could try is to set a system variable. The docker client honors $DOCKER_HOST (for details see <a href="https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option">here</a>). You may proceed as follows:</p>
 <pre><code>DOCKER_HOST=tcp://127.0.0.1:2375
 launchctl setenv DOCKER_HOST $DOCKER_HOST</code></pre>
 </div>
-<div id="using-a-socat-container" class="section level5">
-<h5>4. Using a <code>socat</code> container</h5>
+<div id="using-a-socat-container" class="section level3">
+<h3>4. Using a <code>socat</code> container</h3>
 <p>Using a socat container to redirect the Docker API <strong>works</strong> eventually. See <a href="https://github.com/docker/for-mac/issues/770">here</a> for details.</p>
 <pre><code>docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375, fork UNIX-CONNECT:/var/run/docker.sock
 export DOCKER_HOST=tcp://localhost:1234</code></pre>
 </div>
 </div>
-<div id="download" class="section level4">
-<h4>Download</h4>
+</div>
+<div id="download" class="section level1">
+<h1>Download</h1>
 <p>For macOS you need to download the platform-independent JAR file from this <a href="https://www.shinyproxy.io/downloads/">site</a>.</p>
 </div>
-<div id="running-shinyproxy" class="section level4">
-<h4>Running ShinyProxy</h4>
+<div id="running-shinyproxy" class="section level1">
+<h1>Running ShinyProxy</h1>
 <p>This part works as described on the ShinyProxy <a href="https://www.shinyproxy.io/getting-started/#running-shinyproxy"><em>Getting Started</em></a> website. If you need more details you will find them there.</p>
-<div id="pulling-the-demo-image" class="section level5">
-<h5>Pulling the demo image</h5>
+<div id="pulling-the-demo-image" class="section level2">
+<h2>Pulling the demo image</h2>
 <pre><code>sudo docker pull openanalytics/shinyproxy-demo</code></pre>
 </div>
-<div id="running-shinyproxy-1" class="section level5">
-<h5>Running ShinyProxy</h5>
+<div id="running-shinyproxy-1" class="section level2">
+<h2>Running ShinyProxy</h2>
 <pre><code>java -jar shinyproxy-x.y.z.jar</code></pre>
 <p>Substitute <code>x.y.z</code> with the ShinyProxy version number. When running the demo app you will be asked for username and password. These are “einstein” and “password”.</p>
 <p>Hope that helps.</p>
-</div>
-</div>
 </div>
 </div>
 
@@ -304,6 +402,8 @@ export DOCKER_HOST=tcp://localhost:1234</code></pre>
 <p><a href="imprint.html">Impressum (German)</a></p>
 
 
+</div>
+</div>
 
 </div>
 
