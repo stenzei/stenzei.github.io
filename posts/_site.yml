@@ -9,7 +9,7 @@ navbar:
     - icon: fa-github fa-lg
       href: https://github.com/stenzei
     - icon: fa-twitter fa-lg
-      href: https://twitter.com/intent/tweet
+      href: "https://twitter.com/share?url=https://stenzei.github.io"
 output_dir: "."
 output:
   html_document:
