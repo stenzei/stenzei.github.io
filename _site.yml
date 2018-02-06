@@ -1,0 +1,22 @@
+name: "stenze-R-pieces"
+navbar:
+  title: "stenze-R-pieces"
+  right:
+    - text: "Blog"
+      href: index.html
+    - text: "About"
+      href: about.html
+    - icon: fa-github fa-lg
+      href: https://github.com/stenzei
+    - icon: fa-twitter fa-lg
+      href: https://twitter.com/intent/tweet  
+output_dir: "."
+output:
+  html_document:
+    theme: cosmo
+    number_sections: no
+    highlight: pygments
+    toc: no
+    include:
+      after_body: footer.html
+      

@@ -1,0 +1,137 @@
+---
+title: "How to install ShinyProxy on macOS"
+author: "stenze"
+date: "01.31.2018"
+---
+
+How to get ShinyProxy run on Linux systems can be found on the 
+[ShinyProxy](https://www.shinyproxy.io) website. However, on macOS things are 
+slightly different. The following holds at least for macOS 10.13.3 on a 2016 
+MacBook Pro and bases on the 
+[_Getting Started_](https://www.shinyproxy.io/getting-started/) section of the
+ShinyProxy website, but is adapted to macOS.
+
+# Prerequisites
+
+## Java 8
+You will need the Java 8 runtime environment. First find out your Java version 
+(use your terminal):
+```{}
+java -version
+```
+You should see something like
+```{}
+java version "1.8.0_162"
+Java(TM) SE Runtime Environment (build 1.8.0_162-b12)
+...
+```
+If you don't see that, install [Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html).
+
+## Docker 
+You will also need Docker. But, this part is fairly different from what 
+works on Linux systems.
+
+## Installation
+Find out if the Docker daemon is running:
+```{}
+docker run hello-world
+```
+You should see something like this:
+```{}
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+...
+```
+If you have Docker installed but not running you can start it from your Terminal 
+by
+```{}
+open /Applications/Docker.app
+```
+Alternatively, you can start Docker by using the standard way of starting apps
+in macOS. If you need to install Docker on your Mac you will find instructions 
+how to install it on the [docker](https://docs.docker.com/docker-for-mac/install/)
+website.
+
+## Docker startup options
+When you execute the ShinyProxy JAR file it connects to the Docker daemon on
+port 2375. Therefore, you need to configure Docker to allow that. On Linux 
+systems, this is done by setting the startup options for the  the Docker daemon.
+On macOS for security reasons this port is not exposed directly. A work around
+is shown in number 4 of the following attempts to solve the problem. The first
+three do not work. So, if you are not interested in what is not working skip 
+the next three points.
+
+
+### 1. Editing `daemon.json`
+The following (maybe intuitive) way does __not work__ (at least currently):
+
+- Click ![](../img/docker-whale.png) in your menu bar
+- Select _Preferences ..._
+- Go to _Deamon_
+- Click _Advanced_
+- Add to the daemon settings:
+
+```{}
+{
+  ...
+  "hosts" : ["tcp://127.0.0.1:2375", "unix://"],
+  ...
+}
+```
+
+This yields: _"hosts" : Cannot be used in Docker for mac._
+
+### 2. Starting daemon with `-H` option
+The following two (__not working__)  approaches can also be found on internet:
+```{}
+sudo dockerd -H unix:///var/run/docker.sock -H tcp://127.0.0.1:2375
+
+sudo nohup docker daemon -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock &
+```
+This works for Linux systems, on macOS both do not work (see 
+[here](https://github.com/docker/for-mac/issues/2267) for an explanation).
+
+### 3. Setting `$DOCKER_HOST` variable
+Another __not working__ way one could try is to set a system variable. The 
+docker client honors $DOCKER_HOST (for details see 
+[here](https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-socket-option)). 
+You may proceed as follows:
+```{}
+DOCKER_HOST=tcp://127.0.0.1:2375
+launchctl setenv DOCKER_HOST $DOCKER_HOST
+```
+
+### 4. Using a `socat` container
+Using a socat container to redirect the Docker API __works__ eventually. See
+[here](https://github.com/docker/for-mac/issues/770) for details.
+```{}
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375, fork UNIX-CONNECT:/var/run/docker.sock
+export DOCKER_HOST=tcp://localhost:1234
+```
+
+# Download
+For macOS you need to download the platform-independent JAR file from this 
+[site](https://www.shinyproxy.io/downloads/).
+
+# Running ShinyProxy
+This part works as described on the ShinyProxy 
+[_Getting Started_](https://www.shinyproxy.io/getting-started/#running-shinyproxy) 
+website. If you need more details you will find them there.
+
+## Pulling the demo image
+```{}
+sudo docker pull openanalytics/shinyproxy-demo
+```
+
+## Running ShinyProxy
+```{}
+java -jar shinyproxy-x.y.z.jar
+```
+Substitute `x.y.z` with the ShinyProxy version number. When running the demo app
+you will be asked for username and password. These are "einstein" and "password".
+
+Hope that helps.
+
+
+
+

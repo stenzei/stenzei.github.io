@@ -1,0 +1,84 @@
+---
+title: "Blog"
+---
+
+![](img/banner.jpg)
+
+<br><br>
+
+### How to install ShinyProxy on macOS
+
+I 2018
+
+*R - Shiny - ShinyProxy - Docker - macOS*
+
+ShinyProxy is an open source enterprise ready alternative to Shiny Server Pro.
+How to get it run on Linux systems can be found on the 
+[ShinyProxy](https://www.shinyproxy.io) website. However, on macOS things are 
+slightly different. This post is based on the 
+[_Getting Started_](https://www.shinyproxy.io/getting-started/) section of the
+ShinyProxy website, but is adapted to macOS. 
+
+[Read more ...](posts/2018-31-01-getting-started.html)
+
+---
+
+### Workshop: Introduction into Shiny Dashboards
+
+X 2017
+
+*R - Shiny - Dashboard - Exercises*
+
+Shiny allows to interact with plots, maps and tables to explore
+data. Especially dashboards are well suited to present data in an interactive 
+way. There is a number of R packages related to Shiny, which make it relatively 
+easy to develop dashboards by wrapping web technologies like HTML, CSS and 
+JavaScript. This script introduces into developing dashboards with Shiny and 
+related packages. 
+
+[Read more ...](posts/2017-10-15-script-static.html) 
+
+[Download script as interactive Rmarkdown  ...](download/2017-10-15-script.Rmd)
+
+---
+
+### Talk: Data Science and Data Scientists in Business
+
+X 2017
+
+*Talk - Data Science - Overview*
+
+This talk is an incomplete attempt to give young scientists an overview about
+data science applications and the daily work of data scientists in enterprises.
+It was given at the University of Göttingen at _RTG 1644 "Scaling Problems in 
+Statistics"_. 
+
+[Download slides ...](download/DSTalkX2017.pdf)
+
+---
+
+### Stratification of Multivariate Data Sets for Latin Hypercube Sampling
+
+VIII 2016
+
+*Latin Hypercube Sampling - Data Stratification - Recursion - R - dplyr - Shiny*
+
+This post is about how to stratify large multivariate data sets 
+with unknown dependencies and distribution to prepare
+them for Sensitivity Analysis via Latin Hypercube Sampling. 
+
+[Read more ...](posts/2016-08-29-stratification.html)
+
+---
+
+### POC: Vectorizing Grid Models
+
+IV 2016
+
+*R - Sparse Matrix - Game of Live - Vectorization - Fast Computation*
+
+Among other fields, in machine learning vectorization is a common approach to 
+reduce computation costs. Here I want to show how this approach can be applied
+to cellular automata. I am using Conway's Game of Life as an example. 
+
+[Read more ...](posts/2016-04-16-game-of-life.html)

@@ -1,0 +1,18 @@
+---
+title: "About"
+---
+
+![](img/me.jpg)
+<br><br>
+
+Hi, I am a System Scientist. Understanding systems through data, 
+models and visualization is what I do.
+
+I am using R for most of my data related work. I love to use 
+[tidyverse](https://github.com/hadley/tidyverse) 
+and [Shiny](http://shiny.rstudio.com). For dynamic models I prefer C++ with 
+[Qt](http://www.qt.io) or Java. 
+
+Occasionally I will post some non-sensitive pieces of my work on this site. 
+Hopefully, this might be of some use for somebody.
+

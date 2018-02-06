@@ -1,7 +1,7 @@
 ---
 title: "Building Shiny Dashboards"
-author: "Sten Zeibig"
-date: "X 2017"
+author: "stenze"
+date: "10.15.2017"
 output: 
   html_document:
     toc: yes
