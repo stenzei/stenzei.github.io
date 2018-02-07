@@ -13,10 +13,9 @@ navbar:
 output_dir: "."
 output:
   html_document:
+    lib_dir: site_libs
     theme: cosmo
     number_sections: no
     highlight: pygments
     toc: no
-    include:
-      after_body: footer.html
       

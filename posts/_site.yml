@@ -1,6 +1,6 @@
 name: "stenze-R-pieces"
 navbar:
-  title: "stenze-R-pieces"
+  title: "stenze-R-pieces" 
   right:
     - text: "Blog"
       href: ../index.html
@@ -20,6 +20,4 @@ output:
     toc_depth: 2
     toc_float:
       collapsed: no
-    include:
-      after_body: ../footer.html
       

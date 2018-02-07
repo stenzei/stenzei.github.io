@@ -917,3 +917,4 @@ Some links to helpful resources:
 - [Shinydashboard](https://rstudio.github.io/shinydashboard/)
 - [Highcharter](http://jkunst.com/highcharter/index.html) 
 - [Some more of the most helpfull packages for data science](https://www.rstudio.com/products/rpackages/) 
+

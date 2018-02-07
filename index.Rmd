@@ -1,5 +1,5 @@
 ---
-title: "Blog"
+title: "stenze-R-pieces"
 ---
 
 ![](img/banner.jpg)
@@ -82,3 +82,9 @@ reduce computation costs. Here I want to show how this approach can be applied
 to cellular automata. I am using Conway's Game of Life as an example. 
 
 [Read more ...](posts/2016-04-16-game-of-life.html)
+
+---
+
+[Imprint/Impressum (German)]("imprint.html")
+
+&copy; 2018 stenze &nbsp;&nbsp;

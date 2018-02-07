@@ -131,7 +131,3 @@ Substitute `x.y.z` with the ShinyProxy version number. When running the demo app
 you will be asked for username and password. These are "einstein" and "password".
 
 Hope that helps.
-
-
-
-

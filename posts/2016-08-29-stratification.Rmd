@@ -17,7 +17,8 @@ variations on model output (for details see
 [Wikipedia](https://en.wikipedia.org/wiki/Sensitivity_analysis); 
 for an overview see also the 
 [paper of Thiele et al.](http://jasss.soc.surrey.ac.uk/17/3/11.html)). 
-Latin Hypercube Sampling is an approach to sensitivity analysis (see [Wikipedia](https://en.wikipedia.org/wiki/Latin_hypercube_sampling)) 
+Latin Hypercube Sampling is an approach to sensitivity analysis (see 
+[Wikipedia](https://en.wikipedia.org/wiki/Latin_hypercube_sampling)) 
 to sample parameter values in a efficient way by dividing the multi-dimensional
 parameter space into strata, which contain the same number of parameter 
 combinations. This approach is especially useful, if we have to deal with
@@ -95,13 +96,14 @@ The basic idea for the stratification is to proceed parameter-wise:
 
 The animated gif illustrates this algorithm for three parameters and three 
 strata per parameter, i.e. $3^3 = 27$ strata in total:
+
 ![](../img/algo.gif)
+
 You can see that first parameter 1 is stratified then the first part of 
 parameter 2, then the first part of parameter 3, than parameter 2 again and so 
 on. The code for this function reads as follows.
 
 ```{r, message=FALSE}
-rm(list = ls())
 
 library(dplyr)
 library(tidyr)
@@ -110,9 +112,9 @@ library(lazyeval)
 
 # Recursive function to calculate strata. 
 # Parameters: 
-# dta:         data_frame with any number of parameters each
-#              column is exspected to represent one parameter  
-# numb.strat:  number of strata in each dimension
+#   dta:         data_frame with any number of parameters each
+#                column is exspected to represent one parameter  
+#   numb.strat:  number of strata in each dimension
 stratify <- function(dta, numb.strat=4) {
   parameters <- names(dta)                    # get the names of parameters,
   param <- parameters[1]                      # store the name of the first,
@@ -230,3 +232,4 @@ will be subject to another post.
 
 You can examine and download the code of the example shiny app on
 [github](https://github.com/stenzei/stratify). 
+

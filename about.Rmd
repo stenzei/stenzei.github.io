@@ -16,3 +16,8 @@ and [Shiny](http://shiny.rstudio.com). For dynamic models I prefer C++ with
 Occasionally I will post some non-sensitive pieces of my work on this site. 
 Hopefully, this might be of some use for somebody.
 
+---
+
+[Imprint/Impressum (German)]("imprint.html")
+
+&copy; 2018 stenze &nbsp;&nbsp;
