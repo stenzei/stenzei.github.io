@@ -18,6 +18,6 @@ Hopefully, this might be of some use for somebody.
 
 ---
 
-[Imprint/Impressum (German)]("imprint.html")
+[Imprint/Impressum (German)](imprint.html)
 
 &copy; 2018 stenze &nbsp;&nbsp;
